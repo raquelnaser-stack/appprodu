@@ -43,22 +43,65 @@
       }
       #btnMostrarClave {
         background: #fff;
-        min-width: 48px;
+        min-width: 84px;
         padding: 0 12px;
         display: flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
+        color: #3e3e3e;
+        font-size: 14px;
+        font-weight: 400;
+        font-family: 'Nunito Sans', sans-serif;
       }
-      #btnMostrarClave svg {
-        width: 22px;
-        height: 22px;
-        display: block;
-      }
-      #btnCambiarUsuario {
+      #btnRegresar {
         cursor: pointer;
+        color: #00693c;
+        font-size: 14px;
+        font-weight: 600;
         display: inline-flex;
         align-items: center;
+        margin-bottom: 16px;
+      }
+      .wp-caja-imagen-seguridad {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        border: 1px solid #d0d0d0;
+        border-radius: 12px;
+        padding: 12px;
+        margin: 0 0 24px;
+      }
+      .wp-caja-imagen-seguridad img {
+        width: 112px;
+        height: 86px;
+        object-fit: cover;
+        border-radius: 8px;
+        background: #f4e4ef;
+        flex-shrink: 0;
+      }
+      .wp-caja-imagen-seguridad p {
+        margin: 0;
+        color: #3e3e3e;
+        font-size: 14px;
+        line-height: 1.35;
+      }
+      .wp-caja-imagen-seguridad .wp-imagen-seguridad-titulo {
+        font-weight: 700;
+        margin-bottom: 8px;
+      }
+      #errorClave {
+        display: none;
+        color: #e00;
+        font-size: 12px;
+        letter-spacing: 0.3px;
+        margin: 6px 0 0;
+      }
+      #errorClave.visible {
+        display: block;
+      }
+      #textoRecuperar {
+        cursor: default;
       }
     </style>
   </head>
@@ -153,6 +196,14 @@
                             </div>
                           </div>
                           <div id="pasoClave" hidden>
+                            <div id="btnRegresar" class="wp-icono--regresar">Regresar</div>
+                            <div class="wp-caja-imagen-seguridad">
+                              <img src="./imagen-seguridad.png" alt="Imagen de seguridad" />
+                              <div>
+                                <p class="wp-imagen-seguridad-titulo">¿Reconoces tu imagen de seguridad?</p>
+                                <p>Si no lo es, llama al: <b>02 400 9000</b>.</p>
+                              </div>
+                            </div>
                             <div class="form-group wp-grupo-caja mb-3 wp-control-clave wp-clave">
                               <label class="wp-texto-pequeno wp-etiqueta" for="Clave">Contraseña</label>
                               <div class="input-group">
@@ -172,15 +223,11 @@
                                 />
                                 <div class="input-group-append">
                                   <span>
-                                    <button type="button" id="btnMostrarClave" aria-label="Mostrar contraseña">
-                                      <svg id="iconoOjo" viewBox="0 0 24 24" fill="none" stroke="#00693c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"></path>
-                                        <circle cx="12" cy="12" r="3"></circle>
-                                      </svg>
-                                    </button>
+                                    <button type="button" id="btnMostrarClave">Mostrar</button>
                                   </span>
                                 </div>
                               </div>
+                              <div id="errorClave">Este campo es obligatorio.</div>
                             </div>
                           </div>
                           <button
@@ -191,9 +238,6 @@
                           >
                             Continuar
                           </button>
-                          <div id="btnCambiarUsuario" class="wp-contenedor-hipervinculo wp-hipervinculo mt-3" hidden>
-                            <span class="wp-color-primario font-weight-bold wp-icono--regresar">Cambiar usuario</span>
-                          </div>
                         </div>
                         <div id="btnEnrolamiento" class="wp-control-boton--terciario wp-enrolamiento">
                           <div class="col-12 d-flex p-0">
@@ -211,7 +255,7 @@
                         </div>
                       </form>
                       <div class="wp-contenedor-hipervinculo wp-hipervinculo justify-content-center mt-3">
-                        <span id="btnSolicitudDesbloqueoUsuario" class="wp-color-primario font-weight-bold">
+                        <span id="textoRecuperar" class="wp-color-primario font-weight-bold">
                           Recuperar usuario y contraseña
                         </span>
                       </div>
@@ -236,14 +280,20 @@
       const pasoUsuario = document.getElementById('pasoUsuario')
       const pasoClave = document.getElementById('pasoClave')
       const enrolamiento = document.getElementById('btnEnrolamiento')
-      const cambiarUsuario = document.getElementById('btnCambiarUsuario')
+      const titulo = document.getElementById('tituloPagina')
+      const textoRecuperar = document.getElementById('textoRecuperar')
       const mostrarClave = document.getElementById('btnMostrarClave')
-      const iconoOjo = document.getElementById('iconoOjo')
+      const errorClave = document.getElementById('errorClave')
+      const btnRegresar = document.getElementById('btnRegresar')
       let paso = 'usuario'
 
       function setBotonListo(listo) {
         button.disabled = !listo
         button.classList.toggle('wp-control-boton--deshabilitado', !listo)
+      }
+
+      function setErrorClave(visible) {
+        errorClave.classList.toggle('visible', visible)
       }
 
       usuario.addEventListener('input', function () {
@@ -255,25 +305,34 @@
       })
 
       clave.addEventListener('input', function () {
-        if (paso === 'clave') setBotonListo(this.value.length > 0)
+        if (paso !== 'clave') return
+        const listo = this.value.length > 0
+        setBotonListo(listo)
+        setErrorClave(!listo)
+      })
+
+      clave.addEventListener('focus', function () {
+        if (paso === 'clave' && !this.value) setErrorClave(true)
       })
 
       mostrarClave.addEventListener('click', function () {
         const visible = clave.type === 'text'
         clave.type = visible ? 'password' : 'text'
-        iconoOjo.innerHTML = visible
-          ? '<path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"></path><circle cx="12" cy="12" r="3"></circle>'
-          : '<path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-7 0-11-7-11-7a21.8 21.8 0 0 1 5.06-5.94"></path><path d="M9.9 4.24A10.94 10.94 0 0 1 12 4c7 0 11 7 11 7a21.84 21.84 0 0 1-2.16 3.19"></path><path d="M14.12 14.12a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>'
+        mostrarClave.textContent = visible ? 'Mostrar' : 'Ocultar'
       })
 
-      cambiarUsuario.addEventListener('click', function () {
+      btnRegresar.addEventListener('click', function () {
         paso = 'usuario'
         pasoClave.hidden = true
         pasoUsuario.hidden = false
         enrolamiento.hidden = false
-        cambiarUsuario.hidden = true
+        titulo.hidden = false
+        textoRecuperar.textContent = 'Recuperar usuario y contraseña'
+        textoRecuperar.classList.add('font-weight-bold')
         clave.value = ''
         clave.type = 'password'
+        mostrarClave.textContent = 'Mostrar'
+        setErrorClave(false)
         setBotonListo(usuario.value.trim().length > 0)
         usuario.focus()
       })
@@ -285,8 +344,11 @@
           pasoUsuario.hidden = true
           pasoClave.hidden = false
           enrolamiento.hidden = true
-          cambiarUsuario.hidden = false
-          setBotonListo(clave.value.length > 0)
+          titulo.hidden = true
+          textoRecuperar.textContent = '¿Olvidaste tu contraseña?'
+          textoRecuperar.classList.remove('font-weight-bold')
+          setBotonListo(false)
+          setErrorClave(true)
           clave.focus()
         }
       })
