@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { slides } from '../data'
 import { Icon } from './Icon'
 
@@ -28,9 +27,9 @@ export function Hero() {
               <a className="btn-login btn-login-secondary" href="/empresas/index.html">
                 Banca de Empresas
               </a>
-              <Link className="btn-login btn-login-secondary" to="/banca-en-linea?tipo=cash">
+              <a className="btn-login btn-login-secondary" href="/cash/index.html">
                 Cash Management
-              </Link>
+              </a>
             </div>
           </div>
           <p className="login-note">

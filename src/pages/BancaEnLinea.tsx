@@ -14,6 +14,9 @@ export function BancaEnLinea() {
     if (tipo === 'empresas') {
       window.location.replace('/empresas/index.html')
     }
+    if (tipo === 'cash') {
+      window.location.replace('/cash/index.html')
+    }
   }, [tipo])
 
   function onContinue(event: FormEvent) {

