@@ -13,10 +13,6 @@ export function Hero() {
     return () => window.clearInterval(timer)
   }, [])
 
-  const go = (direction: number) => {
-    setIndex((value) => (value + direction + slides.length) % slides.length)
-  }
-
   const current = slides[index]
 
   return (
@@ -54,15 +50,13 @@ export function Hero() {
               <img src={slide.src} alt={slide.alt} />
             </article>
           ))}
-          {current?.cta && current.href ? (
-            <Link className="slide-cta" to={current.href}>
-              {current.cta}
-            </Link>
+          {current?.cta ? (
+            <span className="slide-cta static-btn">{current.cta}</span>
           ) : null}
-          <button className="slider-btn prev" type="button" onClick={() => go(-1)} aria-label="Anterior">
+          <button className="slider-btn prev static-btn" type="button" aria-label="Anterior">
             <Icon name="prev" />
           </button>
-          <button className="slider-btn next" type="button" onClick={() => go(1)} aria-label="Siguiente">
+          <button className="slider-btn next static-btn" type="button" aria-label="Siguiente">
             <Icon name="next" />
           </button>
           <div className="dots">
@@ -70,9 +64,8 @@ export function Hero() {
               <button
                 key={slide.id}
                 type="button"
-                className={slideIndex === index ? 'active' : ''}
-                aria-label={`Ir a la promoción ${slideIndex + 1}`}
-                onClick={() => setIndex(slideIndex)}
+                className={`static-btn ${slideIndex === index ? 'active' : ''}`}
+                aria-label={`Promoción ${slideIndex + 1}`}
               />
             ))}
           </div>

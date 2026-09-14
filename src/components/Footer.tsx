@@ -10,15 +10,15 @@ export function Footer() {
           <div>
             <p className="titulo-consulta">Call Center</p>
             <p className="numero-consulta">
-              <a href="tel:+59324009000">02 400 9000</a>
+              <span className="static-link">02 400 9000</span>
             </p>
           </div>
         </div>
         <nav className="footer-socials" aria-label="Redes sociales">
           {socialLinks.map((item) => (
-            <a key={item.label} href={item.href} target="_blank" rel="noreferrer" aria-label={item.label}>
+            <span key={item.label} className="static-link" aria-label={item.label}>
               <Icon name={item.icon} />
-            </a>
+            </span>
           ))}
         </nav>
       </div>
@@ -26,21 +26,9 @@ export function Footer() {
         <p>
           © 2026 Banco de la Producción S.A. | Av Simón Bolívar y Vía a Nayón
           Centro Corporativo EKOPARK Torre 1, Quito |{' '}
-          <a href="https://www.bce.fin.ec/" target="_blank" rel="noreferrer">
-            Banco Central del Ecuador
-          </a>{' '}
-          |{' '}
-          <a href="https://www.superbancos.gob.ec/bancos/estadisticas/" target="_blank" rel="noreferrer">
-            Superintendencia de Bancos del Ecuador
-          </a>{' '}
-          |{' '}
-          <a
-            href="https://www.bce.fin.ec/junta-de-politica-y-regulacion-financiera-y-monetaria/"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Junta de Política y Regulación Financiera y Monetaria
-          </a>
+          <span className="static-link">Banco Central del Ecuador</span> |{' '}
+          <span className="static-link">Superintendencia de Bancos del Ecuador</span> |{' '}
+          <span className="static-link">Junta de Política y Regulación Financiera y Monetaria</span>
         </p>
         <img className="footer-star" src="/original/estrella.svg" alt="" />
       </div>
