@@ -1,0 +1,8 @@
+services:
+  - type: web
+    name: appprodu
+    runtime: node
+    region: virginia
+    branch: main
+    buildCommand: npm install && npm run build
+    startCommand: npm start
