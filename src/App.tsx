@@ -15,6 +15,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/banca-en-linea" element={<BancaEnLinea />} />
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
           <Route path="/quienes-somos" element={<QuienesSomos />} />
@@ -24,7 +25,6 @@ export default function App() {
           <Route path="/canales" element={<Canales />} />
           <Route path="/transparencia" element={<Transparencia />} />
           <Route path="/normas-de-transparencia" element={<Navigate to="/transparencia" replace />} />
-          <Route path="/banca-en-linea" element={<BancaEnLinea />} />
           <Route path="/buscar" element={<SearchPage />} />
           <Route path="*" element={<NotFound />} />
         </Route>

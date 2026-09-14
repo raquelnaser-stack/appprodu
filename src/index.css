@@ -941,3 +941,171 @@ img {
     font-size: 26px;
   }
 }
+
+.banca-page {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  background: #003820;
+}
+
+.banca-left {
+  background:
+    linear-gradient(180deg, rgba(0, 42, 24, 0.35), rgba(0, 42, 24, 0.55)),
+    url('/original/fondo.png');
+  background-size: auto, 280px;
+  padding: 48px 8% 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 16px;
+}
+
+.banca-card {
+  background: rgba(0, 42, 24, 0.8);
+  border-radius: 16px;
+  padding: 20px;
+  color: #fff;
+  max-width: 520px;
+}
+
+.banca-kicker {
+  margin: 0 0 12px;
+  color: #78be20;
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.banca-card ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.banca-card li {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.banca-ico {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #00693c;
+  flex: none;
+}
+
+.banca-card p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.banca-card strong {
+  display: block;
+  margin-top: 8px;
+  font-size: 18px;
+}
+
+.banca-copy {
+  color: #fff;
+  font-size: 12px;
+  margin-top: auto;
+}
+
+.banca-right {
+  background: #fff;
+  display: grid;
+  place-items: center;
+  padding: 32px 20px;
+}
+
+.banca-box {
+  width: min(380px, 100%);
+  display: grid;
+  gap: 16px;
+}
+
+.banca-logo {
+  height: 56px;
+  width: auto;
+  justify-self: start;
+}
+
+.banca-box h1 {
+  margin: 0;
+  color: #00693c;
+  font-size: 18px;
+  line-height: 1.25;
+  font-weight: 800;
+}
+
+.banca-tipo {
+  margin: 0;
+  color: #656565;
+  font-size: 14px;
+}
+
+.banca-field {
+  display: grid;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #3e3e3e;
+}
+
+.banca-field input {
+  height: 48px;
+  border: 1px solid #c5c5c5;
+  border-radius: 4px;
+  padding: 12px;
+  font-weight: 400;
+}
+
+.banca-submit {
+  height: 48px;
+  border: 0;
+  border-radius: 4px;
+  background: #00693c;
+  color: #fff;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.banca-submit:hover {
+  background: #003820;
+}
+
+.banca-help {
+  color: #00693c;
+  font-size: 13px;
+  text-decoration: underline;
+}
+
+.banca-back {
+  color: #8b8b8b;
+  font-size: 13px;
+}
+
+@media (max-width: 900px) {
+  .banca-page {
+    grid-template-columns: 1fr;
+  }
+
+  .banca-left {
+    order: 2;
+    padding: 24px 20px 32px;
+  }
+
+  .banca-right {
+    order: 1;
+  }
+
+  .banca-copy {
+    display: none;
+  }
+}
