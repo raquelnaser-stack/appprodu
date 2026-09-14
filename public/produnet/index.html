@@ -6,7 +6,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no" />
     <title>Produbanco - Grupo Promerica</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
     <link href="./bootstrap.min.css" rel="stylesheet" />
+    <link href="./basepublico.6a80f4022710bfcff351.css" rel="stylesheet" />
+    <link href="./imageninicio.1737e4b67715e29208fe.css" rel="stylesheet" />
+    <link href="./vendor.5d13ead0f5a731ff13b3.css" rel="stylesheet" />
+    <link href="./wpcontroles.0afe287d7ca13883188d.css" rel="stylesheet" />
+    <link href="./ingresousuario.ae31db5e45ba77a41c1f.css" rel="stylesheet" />
+    <style>
+      html, body, input, button, label {
+        font-family: 'Nunito Sans', sans-serif !important;
+      }
+      #Usuario.wp-mayuscula {
+        text-transform: uppercase !important;
+        font-size: 14px !important;
+        font-weight: 400 !important;
+        letter-spacing: 0.2px;
+        color: #3e3e3e !important;
+        line-height: 1.75 !important;
+      }
+      #Usuario.wp-mayuscula::placeholder {
+        text-transform: none !important;
+        font-size: 14px !important;
+        letter-spacing: 0;
+        color: #8b8b8b !important;
+      }
+    </style>
     <link href="./basepublico.6a80f4022710bfcff351.css" rel="stylesheet" />
     <link href="./imageninicio.1737e4b67715e29208fe.css" rel="stylesheet" />
     <link href="./vendor.5d13ead0f5a731ff13b3.css" rel="stylesheet" />
@@ -148,6 +175,10 @@
       const input = document.getElementById('Usuario')
       const button = document.getElementById('btnValidaUsuario')
       input.addEventListener('input', function () {
+        const start = this.selectionStart
+        const end = this.selectionEnd
+        this.value = this.value.toUpperCase()
+        this.setSelectionRange(start, end)
         const ready = this.value.trim().length > 0
         button.disabled = !ready
         button.classList.toggle('wp-control-boton--deshabilitado', !ready)
