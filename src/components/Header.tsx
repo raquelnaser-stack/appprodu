@@ -2,7 +2,6 @@ import { useState, type FormEvent } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { navItems, socialLinks } from '../data'
 import { Icon } from './Icon'
-import { Logo } from './Logo'
 
 export function Header() {
   const navigate = useNavigate()
@@ -22,13 +21,7 @@ export function Header() {
       <div className="topbar">
         <div className="topbar-inner">
           <Link to="/" className="brand" aria-label="Produbanco inicio">
-            <div>
-              <span className="brand-copy">
-                <span className="brand-name">Produbanco</span>
-                <span className="brand-sub">Grupo Promerica</span>
-              </span>
-            </div>
-            <Logo />
+            <img className="brand-logo" src="/original/logo.png" alt="Logo Produbanco Promerica" />
             <span className="country">Ecuador</span>
           </Link>
 
@@ -42,22 +35,18 @@ export function Header() {
             </nav>
 
             <form className="search" onSubmit={onSearch} role="search">
+              <button type="submit" aria-label="Buscar">
+                <Icon name="search" />
+              </button>
               <input
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
                 placeholder="Buscar"
                 aria-label="Buscar"
               />
-              <button type="submit" aria-label="Buscar">
-                <Icon name="search" />
-              </button>
             </form>
 
-            <div className="flag" aria-hidden="true">
-              <span />
-              <span />
-              <span />
-            </div>
+            <img className="flag-img" src="/original/ecuador.png" alt="Bandera Ecuador" />
 
             <button
               className="menu-toggle"

@@ -79,97 +79,76 @@ export const navItems: NavItem[] = [
 
 export type Slide = {
   id: string
-  kind: 'concert' | 'cards' | 'classes' | 'security' | 'image'
-  eyebrow?: string
-  title: string
-  highlight?: string
-  body: string
-  extra?: string
-  cta?: string
+  src: string
+  alt: string
   href?: string
+  cta?: string
 }
 
 export const slides: Slide[] = [
+  { id: 'banca', src: '/original/banner-banca.png', alt: 'Produbanco en línea' },
   {
-    id: 'concert',
-    kind: 'concert',
-    eyebrow: 'Tantas cosas que contar · Tour 2027',
-    title: 'Compra tus entradas',
-    highlight: 'con tarjetas Produbanco',
-    body: 'Y difiere hasta 10 meses sin intereses + 1 mes de gracia',
-    extra: 'Adquiere tus entradas en: www.ticketshow.com.ec',
-  },
-  {
-    id: 'classes',
-    kind: 'classes',
-    eyebrow: 'Regreso a clases Sierra 2026',
-    title: 'Triple milla o cashback',
-    highlight: 'en la colegiatura de tus hijos',
-    body: 'Paga con tus tarjetas Produbanco y acumula beneficios hasta el 30/09/2026.',
-    cta: 'Ver promoción',
+    id: 'clases',
+    src: '/original/banner-clases-desktop.png',
+    alt: 'Regreso a clases Sierra 2026',
     href: '/personas#promociones',
+    cta: 'Regístrate aquí',
   },
+  { id: 'concert', src: '/original/banner-concert.jpg', alt: 'La Oreja de Van Gogh Tour' },
   {
-    id: 'cards',
-    kind: 'cards',
-    eyebrow: 'Tarjetas de crédito',
-    title: 'Una tarjeta para cada momento',
-    highlight: 'de tu vida',
-    body: 'Millas, cashback y diferidos. Elige el plástico que se adapta a tu estilo.',
-    cta: 'Conocer tarjetas',
+    id: 'tarjeta',
+    src: '/original/banner-3.jpg',
+    alt: 'Solicita tu tarjeta de crédito',
     href: '/personas#tarjetas',
+    cta: 'Solicítala aquí',
   },
-  {
-    id: 'security',
-    kind: 'security',
-    eyebrow: 'Tu seguridad primero',
-    title: 'Nunca compartas claves',
-    highlight: 'ni códigos de un solo uso',
-    body: 'Produbanco no solicita información confidencial por correo, SMS o redes sociales.',
-    cta: 'Tips de seguridad',
-    href: '/canales#digitales',
-  },
+  { id: 'home4', src: '/original/banner-4.jpg', alt: 'Promoción Produbanco' },
+  { id: 'feb', src: '/original/banner-5.png', alt: 'Campaña Produbanco' },
+  { id: 'antilavado', src: '/original/banner-6.png', alt: 'Prevención de lavado de activos' },
 ]
 
 export const serviceCards = [
   {
     to: '/personas#tarjetas',
     title: 'Tarjeta de Crédito',
-    text: 'Descubre la tarjeta que se adapte a tus necesidades',
-    image: 'cards' as const,
+    text: 'Descubre la tarjeta de crédito que se adapte a tus necesidades',
+    image: '/original/card-tarjetas.jpg',
   },
   {
     to: '/canales',
     title: 'Agencias y Cajeros',
-    text: 'Visita nuestra red comercial de agencias y cajeros a nivel nacional',
-    image: 'sky' as const,
+    text: 'Visita nuestra red comercial de agencias y cajeros automáticos a nivel nacional',
+    image: '/original/card-sucursales.jpg',
   },
   {
     to: '/canales#manuales',
     title: 'Manuales Produbanco',
-    text: 'Guías para registrarte en la web transaccional, la app y operar con seguridad',
-    image: 'office' as const,
+    text: 'Manuales para registrarte en nuestra web transaccional - App Móvil y para realizar transacciones',
+    image: '/original/card-manuales.jpg',
   },
 ]
 
 export const promotions = [
   {
-    title: 'Triple milla o cashback',
-    text: 'Al pagar la colegiatura de tus hijos',
+    title: 'Triple Milla o Cashback',
+    text: 'al pagar la colegiatura de tus hijos',
     vigency: 'Vigencia 30/09/2026',
-    tone: 'green' as const,
+    image: '/original/promo-rac.jpg',
+    to: '/personas#promociones',
   },
   {
-    title: 'Gana 1 MacBook Neo',
-    text: '1 Gift Card PUMA o SKOLE o 1 mochila JANSPORT',
-    vigency: 'Vigencia 31/08/2026',
-    tone: 'dark' as const,
+    title: '20% OFF en Hey Dude',
+    text: 'Comodidad con descuento',
+    vigency: 'Vigencia 20/09/2026',
+    image: '/original/promo-heydude.jpg',
+    to: '/personas#promociones',
   },
   {
-    title: 'Bonos de consumo',
-    text: 'Participa por bonos en KAO SPORTS',
+    title: 'Participa por bonos de consumo en',
+    text: 'KAO SPORTS',
     vigency: 'Vigencia 13/09/2026',
-    tone: 'lime' as const,
+    image: '/original/promo-kao.jpg',
+    to: '/personas#promociones',
   },
 ]
 
@@ -177,17 +156,20 @@ export const infoModules = [
   {
     to: '/quienes-somos#sostenibilidad',
     title: 'Sostenibilidad',
-    text: 'Conoce nuestra web de sostenibilidad y responsabilidad social',
+    text: 'Te presentamos nuestra web de Sostenibilidad y Responsabilidad Social',
+    image: '/original/mod-sostenibilidad.jpg',
   },
   {
     to: '/canales#digitales',
-    title: 'Seguridad en canales',
-    text: 'Tips para usar con confianza la app, la web y los cajeros',
+    title: 'Seguridad en Canales',
+    text: 'Tips de seguridad para utilizar los canales tecnológicos de Produbanco',
+    image: '/original/mod-seguridad.jpg',
   },
   {
     to: '/transparencia#seguro',
-    title: 'Seguro de depósitos',
-    text: 'Cobertura de depósitos y la plataforma Edúcate de COSEDE',
+    title: 'Seguro de Depósitos',
+    text: 'Conoce más sobre la cobertura de depósitos y la Plataforma Edúcate',
+    image: '/original/mod-cosede.webp',
   },
 ]
 
@@ -250,9 +232,10 @@ export const channels = [
 ]
 
 export const socialLinks = [
-  { label: 'Facebook', icon: 'facebook' as const, href: 'https://www.facebook.com/produbanco' },
-  { label: 'Instagram', icon: 'instagram' as const, href: 'https://www.instagram.com/produbanco' },
-  { label: 'YouTube', icon: 'youtube' as const, href: 'https://www.youtube.com/@produbanco' },
+  { label: 'Facebook', icon: 'facebook' as const, href: 'https://www.facebook.com/Produbanco' },
+  { label: 'Instagram', icon: 'instagram' as const, href: 'https://www.instagram.com/produbancoec' },
+  { label: 'YouTube', icon: 'youtube' as const, href: 'https://www.youtube.com/user/ProdubancoEC' },
   { label: 'LinkedIn', icon: 'linkedin' as const, href: 'https://www.linkedin.com/company/produbanco' },
-  { label: 'TikTok', icon: 'tiktok' as const, href: 'https://www.tiktok.com/@produbanco' },
+  { label: 'WhatsApp', icon: 'whatsapp' as const, href: 'https://api.whatsapp.com/send?phone=+59324009000&text=Hola' },
+  { label: 'TikTok', icon: 'tiktok' as const, href: 'https://www.tiktok.com/@produbancoec' },
 ]

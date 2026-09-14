@@ -1,77 +1,68 @@
 import { Link } from 'react-router-dom'
 import { infoModules, promotions, serviceCards } from '../data'
 
-function Media({ type }: { type: 'cards' | 'sky' | 'office' }) {
-  if (type === 'cards') {
-    return (
-      <div className="media cards">
-        <div className="cards-art" style={{ padding: 24 }}>
-          <div className="bank-card silver" />
-          <div className="bank-card green" />
-        </div>
-      </div>
-    )
-  }
-  if (type === 'sky') {
-    return <div className="media sky" />
-  }
-  return <div className="media office" />
-}
-
 export function HomeSections() {
   return (
     <>
-      <div className="section" style={{ paddingTop: 0 }}>
+      <section className="section">
         <div className="cards-row">
           {serviceCards.map((card) => (
-            <Link className="media-card" to={card.to} key={card.title}>
-              <Media type={card.image} />
-              <div className="media-body">
+            <article className="info-tile" key={card.title}>
+              <img src={card.image} alt={card.title} />
+              <div className="info-tile-body">
                 <h3>{card.title}</h3>
                 <p>{card.text}</p>
+                <Link className="btn-secondary" to={card.to}>
+                  Conoce más
+                </Link>
               </div>
-            </Link>
-          ))}
-        </div>
-      </div>
-
-      <section className="section" id="promociones">
-        <h2>Promociones Produbanco</h2>
-        <div className="promo-grid" style={{ marginTop: 18 }}>
-          {promotions.map((promo) => (
-            <article className={`promo ${promo.tone}`} key={promo.title}>
-              <div>
-                <h3 style={{ margin: '0 0 8px', fontSize: 26 }}>{promo.title}</h3>
-                <p style={{ margin: 0 }}>{promo.text}</p>
-              </div>
-              <span>{promo.vigency}</span>
             </article>
           ))}
         </div>
       </section>
 
-      <section className="section">
-        <div className="info-grid">
-          {infoModules.map((module) => (
-            <Link className="info-card" to={module.to} key={module.title}>
-              <h3>{module.title}</h3>
-              <p>{module.text}</p>
+      <section className="section" id="promociones">
+        <div className="promo-box">
+          <div className="promo-head">
+            <h2>Promociones Produbanco</h2>
+            <Link className="btn-primary" to="/personas#promociones">
+              Ver todas
             </Link>
-          ))}
+          </div>
+          <div className="promo-grid">
+            {promotions.map((promo) => (
+              <article className="promo-card" key={promo.title}>
+                <img src={promo.image} alt={promo.title} />
+                <h3>{promo.title}</h3>
+                <p>{promo.text}</p>
+                <div className="promo-foot">
+                  <Link className="btn-primary" to={promo.to}>
+                    Conoce Más
+                  </Link>
+                  <span>{promo.vigency}</span>
+                </div>
+              </article>
+            ))}
+          </div>
         </div>
       </section>
 
-      <div className="callout">
-        <div className="callout-inner">
-          <div>
-            <div>Call Center</div>
-            <strong>02 400 9000</strong>
-          </div>
-          <Link className="pill pill-solid" to="/canales">
-            Ver canales de atención
-          </Link>
+      <section className="section">
+        <div className="cards-row">
+          {infoModules.map((module) => (
+            <article className="info-tile" key={module.title}>
+              <img src={module.image} alt={module.title} />
+              <div className="info-tile-body">
+                <h3>{module.title}</h3>
+                <p>{module.text}</p>
+                <Link className="btn-secondary" to={module.to}>
+                  Conoce más
+                </Link>
+              </div>
+            </article>
+          ))}
         </div>
-      </div>
+      </section>
     </>
   )
 }
