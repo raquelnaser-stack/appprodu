@@ -22,9 +22,9 @@ export function Hero() {
           <div className="login-main">
             <h2>Produbanco enlínea</h2>
             <div className="login-actions">
-              <Link className="btn-login btn-login-primary" to="/banca-en-linea?tipo=personas">
+              <a className="btn-login btn-login-primary" href="/produnet/index.html">
                 Banca de Personas
-              </Link>
+              </a>
               <Link className="btn-login btn-login-secondary" to="/banca-en-linea?tipo=empresas">
                 Banca de Empresas
               </Link>

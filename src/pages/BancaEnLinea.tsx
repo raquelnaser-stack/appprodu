@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react'
+import { useEffect, useState, type FormEvent } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 
 export function BancaEnLinea() {
@@ -6,6 +6,12 @@ export function BancaEnLinea() {
   const tipo = params.get('tipo') || 'personas'
   const [usuario, setUsuario] = useState('')
   const [paso, setPaso] = useState<'usuario' | 'clave'>('usuario')
+
+  useEffect(() => {
+    if (tipo === 'personas') {
+      window.location.replace('/produnet/index.html')
+    }
+  }, [tipo])
 
   function onContinue(event: FormEvent) {
     event.preventDefault()
