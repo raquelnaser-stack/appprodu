@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Produbanco - Banca de Empresas</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      * { box-sizing: border-box; }
+      html, body {
+        margin: 0;
+        min-height: 100%;
+        font-family: 'Nunito Sans', sans-serif;
+        color: #3e3e3e;
+      }
+      .page {
+        min-height: 100vh;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+      .left {
+        position: relative;
+        overflow: hidden;
+        background: radial-gradient(1200px 900px at 18% 8%, #0b6b42 0%, #005f38 28%, #003820 68%, #002616 100%);
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 56px 8% 40px;
+      }
+      .left::before {
+        content: '';
+        position: absolute;
+        inset: -20% -10% -10% -10%;
+        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800' fill='none' stroke='rgba(255,255,255,0.10)' stroke-width='1.2'><path d='M0 720 L420 180 L760 520 L1200 40'/><path d='M80 800 L540 220 L900 640'/><path d='M-40 480 L380 80 L820 420 L1200 160'/><path d='M200 0 L640 560 L1100 120'/></svg>");
+        background-size: cover;
+        pointer-events: none;
+      }
+      .left-inner {
+        position: relative;
+        z-index: 1;
+        max-width: 520px;
+      }
+      .card {
+        background: rgba(0, 32, 18, 0.55);
+        border-radius: 18px;
+        padding: 22px 24px 20px;
+        margin-bottom: 18px;
+      }
+      .card h2 {
+        margin: 0 0 16px;
+        color: #8fd13a;
+        font-size: 18px;
+        font-weight: 800;
+      }
+      .tips {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 16px;
+      }
+      .tips li {
+        display: grid;
+        grid-template-columns: 36px 1fr;
+        gap: 12px;
+        align-items: flex-start;
+        font-size: 14px;
+        line-height: 1.35;
+        font-weight: 400;
+      }
+      .tips b { font-weight: 800; }
+      .ico {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: #0a5a36;
+        display: grid;
+        place-items: center;
+        flex-shrink: 0;
+      }
+      .ico svg { width: 18px; height: 18px; }
+      .protect p {
+        margin: 0;
+        font-size: 14px;
+        line-height: 1.4;
+      }
+      .protect a {
+        color: #fff;
+        font-weight: 800;
+        text-decoration: underline;
+        pointer-events: none;
+      }
+      .copy {
+        position: relative;
+        z-index: 1;
+        margin: 28px 0 0;
+        font-size: 13px;
+        color: rgba(255,255,255,.85);
+      }
+      .right {
+        background: #fff;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        padding: 18px 28px 28px;
+      }
+      .right-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .back {
+        width: 36px;
+        height: 36px;
+        display: grid;
+        place-items: center;
+        color: #00693c;
+        text-decoration: none;
+      }
+      .translate {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #00693c;
+        font-size: 14px;
+        font-weight: 600;
+        pointer-events: none;
+      }
+      .panel {
+        width: min(420px, 100%);
+        margin: auto;
+        padding: 12px 0 48px;
+      }
+      .logo {
+        display: block;
+        height: 54px;
+        width: auto;
+        margin: 0 auto 28px;
+      }
+      h1 {
+        margin: 0 0 28px;
+        text-align: center;
+        color: #00693c;
+        font-size: 22px;
+        font-weight: 700;
+      }
+      label {
+        display: block;
+        font-size: 14px;
+        font-weight: 400;
+        margin-bottom: 8px;
+      }
+      .campo {
+        display: flex;
+        align-items: center;
+        height: 48px;
+        border: 1px solid #cfcfcf;
+        border-radius: 8px;
+        overflow: hidden;
+        margin-bottom: 16px;
+      }
+      .campo:focus-within { border-color: #00693c; }
+      .campo input {
+        flex: 1;
+        min-width: 0;
+        height: 100%;
+        border: 0;
+        outline: none;
+        padding: 0 14px;
+        font-size: 14px;
+        font-family: inherit;
+        color: #3e3e3e;
+        background: transparent;
+      }
+      .campo input::placeholder { color: #9a9a9a; }
+      .mostrar {
+        border: 0;
+        background: #fff;
+        height: 100%;
+        padding: 0 16px;
+        color: #3e3e3e;
+        font-size: 14px;
+        font-family: inherit;
+        cursor: pointer;
+      }
+      .continuar {
+        width: 100%;
+        height: 48px;
+        border: 0;
+        border-radius: 8px;
+        background: #ececec;
+        color: #9a9a9a;
+        font-size: 16px;
+        font-weight: 700;
+        font-family: inherit;
+        cursor: not-allowed;
+      }
+      .continuar.listo {
+        background: #00693c;
+        color: #fff;
+        cursor: pointer;
+      }
+      .help {
+        display: block;
+        text-align: center;
+        margin: 22px 0 20px;
+        color: #00693c;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+        pointer-events: none;
+      }
+      .registro {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border: 1px solid #dedede;
+        border-radius: 12px;
+        padding: 14px 16px;
+        pointer-events: none;
+      }
+      .registro-ico {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #e8f4ee;
+        display: grid;
+        place-items: center;
+        color: #00693c;
+        flex-shrink: 0;
+      }
+      .registro b { display: block; font-size: 14px; }
+      .registro span { display: block; font-size: 13px; color: #656565; }
+      .chevron { margin-left: auto; color: #8b8b8b; font-size: 22px; }
+      .phone {
+        text-align: center;
+        margin-top: 56px;
+        font-size: 13px;
+        color: #656565;
+      }
+      .phone b { color: #3e3e3e; }
+      @media (max-width: 900px) {
+        .page { grid-template-columns: 1fr; }
+        .left { min-height: auto; padding: 32px 20px; order: 2; }
+        .right { min-height: auto; order: 1; }
+        .copy { display: none; }
+        .phone { margin-top: 28px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <aside class="left">
+        <div class="left-inner">
+          <section class="card">
+            <h2>¡Recomendaciones para ti!</h2>
+            <ul class="tips">
+              <li>
+                <span class="ico" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#b7e36a" stroke-width="1.7">
+                    <circle cx="12" cy="8" r="3.2"></circle>
+                    <path d="M5.5 19c.8-3.2 3.3-5 6.5-5s5.7 1.8 6.5 5"></path>
+                    <rect x="14.2" y="12.2" width="6.2" height="5" rx="1.1"></rect>
+                    <path d="M15.8 12.2v-1.2a1.3 1.3 0 0 1 2.6 0v1.2"></path>
+                  </svg>
+                </span>
+                <div>No compartas tu usuario ni contraseña, evita guardarlos en el navegador y cámbialos periódicamente. <b>Su uso y resguardo son tu responsabilidad.</b></div>
+              </li>
+              <li>
+                <span class="ico" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#b7e36a" stroke-width="1.7">
+                    <path d="M12 3.5 5 6.5v5.2c0 4.3 2.9 7.3 7 8.8 4.1-1.5 7-4.5 7-8.8V6.5L12 3.5z"></path>
+                    <path d="M9.2 12.2 11.1 14l3.7-3.8"></path>
+                  </svg>
+                </span>
+                <div>Produbanco nunca solicita contraseñas por correo, chat o mensajes. Si alguien lo hace, no compartas tu información.</div>
+              </li>
+              <li>
+                <span class="ico" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#b7e36a" stroke-width="1.7">
+                    <rect x="3.5" y="5" width="17" height="11.5" rx="1.5"></rect>
+                    <path d="M8 20h8M12 16.5V20"></path>
+                  </svg>
+                </span>
+                <div>Verifica siempre que tu ingreso sea en: <b>www.produbanco.com.ec</b>, y mantén actualizado tu sistema operativo y navegador.</div>
+              </li>
+            </ul>
+          </section>
+          <section class="card protect">
+            <h2>¡Protege tu dinero y tus datos!</h2>
+            <p>Saca el máximo provecho a nuestros canales. Descubre cómo en nuestras <a>Guías de uso y Tips de Seguridad</a>.</p>
+          </section>
+        </div>
+        <p class="copy">©2026 Produbanco. Todos los derechos reservados.</p>
+      </aside>
+
+      <main class="right">
+        <div class="right-top">
+          <a class="back" href="/" aria-label="Regresar">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M15 18 9 12l6-6"></path>
+            </svg>
+          </a>
+          <span class="translate">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+              <circle cx="12" cy="12" r="9"></circle>
+              <path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"></path>
+            </svg>
+            Translate to English
+          </span>
+        </div>
+
+        <div class="panel">
+          <img class="logo" src="/original/logo.png" alt="Produbanco Grupo Promerica" />
+          <h1>Bienvenido a Banca de Empresas</h1>
+          <form id="frmEmpresas" novalidate>
+            <div id="pasoUsuario">
+              <label for="Usuario">Usuario</label>
+              <div class="campo">
+                <input id="Usuario" name="Usuario" type="text" maxlength="40" autocomplete="off" placeholder="Ingresa tu usuario" />
+              </div>
+            </div>
+            <div id="pasoClave" hidden>
+              <label for="Clave">Contraseña</label>
+              <div class="campo">
+                <input id="Clave" name="Clave" type="password" maxlength="40" autocomplete="off" placeholder="Ingresa tu contraseña" />
+                <button type="button" class="mostrar" id="btnMostrar">Mostrar</button>
+              </div>
+            </div>
+            <button class="continuar" id="btnContinuar" type="submit" disabled>Continuar</button>
+          </form>
+          <span class="help" id="textoAyuda">¿Olvidaste tu usuario? Recupéralo</span>
+          <div class="registro" id="cajaRegistro">
+            <span class="registro-ico" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <circle cx="12" cy="8" r="3.2"></circle>
+                <path d="M5.6 19c.9-3.3 3.4-5 6.4-5s5.5 1.7 6.4 5"></path>
+              </svg>
+            </span>
+            <div>
+              <b>¿No tienes usuario y contraseña?</b>
+              <span>Regístrate para iniciar sesión</span>
+            </div>
+            <span class="chevron">›</span>
+          </div>
+          <p class="phone">Si tienes problemas para ingresar, comunícate al: <b>02 400 9000</b></p>
+        </div>
+      </main>
+    </div>
+    <script>
+      const usuario = document.getElementById('Usuario')
+      const clave = document.getElementById('Clave')
+      const boton = document.getElementById('btnContinuar')
+      const pasoUsuario = document.getElementById('pasoUsuario')
+      const pasoClave = document.getElementById('pasoClave')
+      const ayuda = document.getElementById('textoAyuda')
+      const registro = document.getElementById('cajaRegistro')
+      const mostrar = document.getElementById('btnMostrar')
+      let paso = 'usuario'
+
+      function setListo(listo) {
+        boton.disabled = !listo
+        boton.classList.toggle('listo', listo)
+      }
+
+      usuario.addEventListener('input', function () {
+        if (paso === 'usuario') setListo(this.value.trim().length > 0)
+      })
+      clave.addEventListener('input', function () {
+        if (paso === 'clave') setListo(this.value.length > 0)
+      })
+      mostrar.addEventListener('click', function () {
+        const visible = clave.type === 'text'
+        clave.type = visible ? 'password' : 'text'
+        mostrar.textContent = visible ? 'Mostrar' : 'Ocultar'
+      })
+      document.getElementById('frmEmpresas').addEventListener('submit', function (event) {
+        event.preventDefault()
+        if (paso === 'usuario' && usuario.value.trim()) {
+          paso = 'clave'
+          pasoUsuario.hidden = true
+          pasoClave.hidden = false
+          registro.hidden = true
+          ayuda.textContent = '¿Olvidaste tu contraseña?'
+          setListo(false)
+          clave.focus()
+        }
+      })
+    </script>
+  </body>
+</html>

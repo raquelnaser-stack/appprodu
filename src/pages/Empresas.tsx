@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom'
 import { PageHero } from '../components/PageHero'
 
 export function Empresas() {
@@ -8,9 +7,9 @@ export function Empresas() {
         title="Banca Empresas"
         text="Soluciones de crédito, inversiones, comercio exterior y cash management para tesorerías que necesitan control y visibilidad."
       >
-        <Link className="pill pill-solid" to="/banca-en-linea?tipo=empresas" style={{ marginTop: 16, display: 'inline-flex' }}>
+        <a className="pill pill-solid" href="/empresas/index.html" style={{ marginTop: 16, display: 'inline-flex' }}>
           Banca de empresas
-        </Link>
+        </a>
       </PageHero>
       <section className="section">
         <div className="product-grid">
