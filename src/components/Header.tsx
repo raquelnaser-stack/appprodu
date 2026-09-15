@@ -4,6 +4,7 @@ import { Icon } from './Icon'
 
 export function Header() {
   const [query, setQuery] = useState('')
+  const [menuOpen, setMenuOpen] = useState(false)
 
   function onSearch(event: FormEvent) {
     event.preventDefault()
@@ -13,10 +14,10 @@ export function Header() {
     <header>
       <div className="topbar">
         <div className="topbar-inner">
-          <span className="brand static-link" aria-label="Produbanco">
+          <a href="/" className="brand" aria-label="Produbanco">
             <img className="brand-logo" src="/original/logo.png" alt="Logo Produbanco Promerica" />
             <span className="country">Ecuador</span>
-          </span>
+          </a>
 
           <div className="top-actions">
             <nav className="socials" aria-label="Redes sociales">
@@ -41,7 +42,17 @@ export function Header() {
 
             <img className="flag-img" src="/original/ecuador.png" alt="Bandera Ecuador" />
 
-            <button className="menu-toggle static-btn" type="button" aria-label="Menú">
+            <a href="/produnet/index.html" className="btn-topbar-login">
+              Banca en Línea
+            </a>
+
+            <button
+              className={`menu-toggle static-btn ${menuOpen ? 'is-active' : ''}`}
+              type="button"
+              aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}
+              aria-expanded={menuOpen}
+              onClick={() => setMenuOpen(!menuOpen)}
+            >
               <span />
               <span />
               <span />
@@ -50,8 +61,20 @@ export function Header() {
         </div>
       </div>
 
-      <nav className="navbar open" aria-label="Principal">
+      <nav className={`navbar ${menuOpen ? 'open' : ''}`} aria-label="Principal">
         <div className="navbar-inner">
+          <div className="mobile-login-shortcuts">
+            <a href="/produnet/index.html" className="mobile-login-btn primary">
+              Banca de Personas
+            </a>
+            <a href="/empresas/index.html" className="mobile-login-btn secondary">
+              Banca de Empresas
+            </a>
+            <a href="/cash/index.html" className="mobile-login-btn secondary">
+              Cash Management
+            </a>
+          </div>
+
           {navItems.map((item) => (
             <div className="nav-item" key={item.label}>
               <span className="static-link">{item.label}</span>

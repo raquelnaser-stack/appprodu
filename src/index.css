@@ -197,6 +197,31 @@ img {
   background: #ed1c24;
 }
 
+.btn-topbar-login {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 38px;
+  padding: 0 16px;
+  background: var(--lime, #78be20);
+  color: #fff;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.btn-topbar-login:hover {
+  background: var(--green, #00693c);
+  color: #fff;
+}
+
+.mobile-login-shortcuts {
+  display: none;
+}
+
 .menu-toggle {
   display: none;
   border: 0;
@@ -896,8 +921,41 @@ img {
 }
 
 @media (max-width: 760px) {
+  .topbar-inner {
+    padding: 8px 12px;
+    height: 60px;
+    gap: 8px;
+  }
+
+  .brand-logo {
+    max-height: 40px;
+  }
+
+  .top-actions {
+    gap: 8px;
+  }
+
+  .btn-topbar-login {
+    height: 32px;
+    padding: 0 10px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .flag-img {
+    width: 22px;
+    height: 15px;
+  }
+
   .menu-toggle {
     display: block;
+    width: 32px;
+    height: 32px;
+    padding: 2px;
+  }
+
+  .menu-toggle span {
+    margin: 5px 2px;
   }
 
   .socials,
@@ -906,19 +964,56 @@ img {
     display: none;
   }
 
+  .navbar:not(.open) {
+    display: none;
+  }
+
   .navbar-inner {
     display: none;
     flex-direction: column;
-    padding: 8px 0 16px;
+    padding: 0 0 16px;
   }
 
   .navbar.open .navbar-inner {
     display: flex;
   }
 
-  .nav-item > a {
+  .mobile-login-shortcuts {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 14px 16px;
+    background: rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    margin-bottom: 8px;
+  }
+
+  .mobile-login-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .mobile-login-btn.primary {
+    background: var(--lime, #78be20);
+    color: #fff;
+  }
+
+  .mobile-login-btn.secondary {
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+  }
+
+  .nav-item > a,
+  .nav-item > span {
     height: auto;
     padding: 12px 20px;
+    font-weight: 600;
   }
 
   .mega {
